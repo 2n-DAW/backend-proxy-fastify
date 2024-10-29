@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import userRoutes from "../user/user.router";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.register(cors, {
     }
 });
 
+app.register(userRoutes);
 
 const start = async () => {
     try {
