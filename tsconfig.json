@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "CommonJS",
+        "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/userRecruiter/dto/userRecruiterViewts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
