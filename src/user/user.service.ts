@@ -16,17 +16,18 @@ export const userRegisterService = async (request: FastifyRequest): Promise<IRes
 
     try {
         //!Cambiar en todos los servidores el error de la respuesta por duplicidad por el 500
-        await axios.post(`${process.env.SERVER_CLIENT}/register`, { user, userType });
-
+        const user_reso = await axios.post(`${process.env.SERVER_CLIENT}/register`, { user, userType });
+        const userId = user_reso.data.user._id;
+        console.log(user_reso.data.user._id);
         switch (userType) {
             case 'client':
-                user_resp = await axios.post(`${process.env.SERVER_CLIENT}/user`, { user });
+                user_resp = await axios.post(`${process.env.SERVER_CLIENT}/user`, { user: { ...user, userId } });
                 break;
             case 'company':
-                user_resp = await axios.post(`${process.env.SERVER_COMPANY}/user`, { user });
+                user_resp = await axios.post(`${process.env.SERVER_COMPANY}/user`, { user: { ...user, userId } });
                 break;
             case 'recruiter':
-                user_resp = await axios.post(`${process.env.SERVER_RECRUITER}/user`, { user });
+                user_resp = await axios.post(`${process.env.SERVER_RECRUITER}/user`, { user: { ...user, userId } });
                 break;
             default:
                 throw new Error('Tipo de usuario inválido');
@@ -35,7 +36,6 @@ export const userRegisterService = async (request: FastifyRequest): Promise<IRes
         return resp(200, user_resp.data);
 
     } catch (error) {
-        console.log("error", error);
         if (axios.isAxiosError(error)) {
             let status = error.response?.status;
             const data = error.response?.data;
@@ -60,7 +60,6 @@ export const userRegisterService = async (request: FastifyRequest): Promise<IRes
                     return resp(status, { message: data.message, server: url });
             }
         } else {
-            console.error('Error inesperado:', error);
             return resp(500, { message: 'Ocurrió un error inesperado. Por favor, intenta nuevamente.' });
         }
     }
@@ -74,7 +73,6 @@ export const userLoginService = async (request: FastifyRequest): Promise<IResp> 
     try {
         const resp_user_type = await axios.post(`${process.env.SERVER_CLIENT}/user/type`, { user });
         const user_type = resp_user_type.data.user.userType;
-        console.log("user_type", user_type);
 
         switch (user_type) {
             case 'client':
