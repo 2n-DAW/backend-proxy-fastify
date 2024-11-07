@@ -9,5 +9,6 @@ export interface IUser {
     updatedAt: Date;
     username: string;
     bio?: string;
+    userType?: string;
 }
 
