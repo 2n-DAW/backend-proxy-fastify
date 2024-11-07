@@ -11,16 +11,19 @@ import { IUserRegister } from "./dto/userRegister.interface";
 
 
 export const userRegisterService = async (request: FastifyRequest): Promise<IResp> => {
-    const { user, userType } = request.body as IUserRegister;
+    const { user } = request.body as IUserRegister;
+    const userType = user.userType;
     let user_resp = {} as AxiosResponse;
 
     try {
         //!Cambiar en todos los servidores el error de la respuesta por duplicidad por el 500
         const user_reso = await axios.post(`${process.env.SERVER_CLIENT}/register`, { user, userType });
+        
         const userId = user_reso.data.user._id;
-        console.log(user_reso.data.user._id);
+        console.log(user, userType, userId);
         switch (userType) {
             case 'client':
+                console.log('------------------------------------');
                 user_resp = await axios.post(`${process.env.SERVER_CLIENT}/user`, { user: { ...user, userId } });
                 break;
             case 'company':
@@ -36,6 +39,7 @@ export const userRegisterService = async (request: FastifyRequest): Promise<IRes
         return resp(200, user_resp.data);
 
     } catch (error) {
+        console.error(error);
         if (axios.isAxiosError(error)) {
             let status = error.response?.status;
             const data = error.response?.data;
