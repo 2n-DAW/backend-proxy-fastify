@@ -21,8 +21,9 @@ app.register(userRoutes);
 const start = async () => {
     try {
         const port = parseInt(process.env.PORT!);
-        await app.listen({ port });
-        app.log.info(`Server running at http://localhost:${port}`);
+        const host = process.env.HOST;
+        await app.listen({ port: port || 3003, host: host })
+        app.log.info(`Server running at http://${host}:${port}`);
     } catch (err) {
         app.log.error(err);
         process.exit(1);

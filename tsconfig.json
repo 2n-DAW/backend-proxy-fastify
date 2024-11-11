@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
-        "target": "ES2017",
+        "target": "ES2022",
         "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
         "strict": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -12,7 +14,7 @@
         ]
     },
     "include": [
-        "src/**/*.ts",
+        "src/**/*",
         "src/userRecruiter/dto/userRecruiterViewts"
     ],
     "exclude": [
